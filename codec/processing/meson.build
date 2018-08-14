@@ -24,7 +24,11 @@ asm_sources = [
   'src/x86/vaa.asm',
 ]
 
-objs_asm = asm_gen.process(asm_sources)
+if nasm.found()
+  objs_asm = asm_gen.process(asm_sources)
+else
+  objs_asm = []
+endif
 
 libprocessing = static_library('processing', cpp_sources, objs_asm,
   include_directories: [inc, processing_inc],

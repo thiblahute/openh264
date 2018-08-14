@@ -26,7 +26,11 @@ asm_sources = [
   'core/x86/intra_pred.asm',
 ]
 
-objs_asm = asm_gen.process(asm_sources)
+if nasm.found()
+  objs_asm = asm_gen.process(asm_sources)
+else
+  objs_asm = []
+endif
 
 libdecoder = static_library('decoder', cpp_sources, objs_asm,
   include_directories: [inc, decoder_inc],

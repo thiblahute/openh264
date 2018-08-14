@@ -38,7 +38,7 @@ encoder_inc = include_directories([
 
 asm_inc = join_paths(meson.current_source_dir(), 'codec', 'common', 'x86', '')
 
-nasm = find_program('nasm', 'nasm.exe')
+nasm = find_program('nasm', 'nasm.exe', required: false)
 
 system = host_machine.system()
 cpu_family = host_machine.cpu_family()
@@ -86,13 +86,15 @@ else
   error ('FIXME: Unhandled system @0@'.format(system))
 endif
 
-asm_gen = generator(nasm,
-  output : '@BASENAME@.o',
-  arguments : [
-    '-f', asm_format,
-    '-i', asm_inc,
-    '@INPUT@',
-    '-o', '@OUTPUT@'] + asm_args)
+if nasm.found()
+  asm_gen = generator(nasm,
+    output : '@BASENAME@.o',
+    arguments : [
+      '-f', asm_format,
+      '-i', asm_inc,
+      '@INPUT@',
+      '-o', '@OUTPUT@'] + asm_args)
+endif
 
 api_headers = []
 api_header_deps = []

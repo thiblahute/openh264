@@ -30,7 +30,11 @@ asm_sources = [
   'x86/vaa.asm',
 ]
 
-objs_asm = asm_gen.process(asm_sources)
+if nasm.found()
+  objs_asm = asm_gen.process(asm_sources)
+else
+  objs_asm = []
+endif
 
 libcommon = static_library('common', cpp_sources, objs_asm,
   include_directories: inc,

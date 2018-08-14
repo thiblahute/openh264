@@ -44,7 +44,11 @@ asm_sources = [
   'core/x86/score.asm',
 ]
 
-objs_asm = asm_gen.process(asm_sources)
+if nasm.found()
+  objs_asm = asm_gen.process(asm_sources)
+else
+  objs_asm = []
+endif
 
 libencoder = static_library('encoder', cpp_sources, objs_asm,
   include_directories: [inc, processing_inc, encoder_inc],
